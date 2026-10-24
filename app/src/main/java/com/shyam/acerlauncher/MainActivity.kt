@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.provider.Settings
+import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -56,6 +58,10 @@ class MainActivity : TvActivity() {
         grid.adapter = adapter
         grid.itemAnimator = null
 
+        findViewById<View>(R.id.systemSettingsButton).apply {
+            FocusAnimator.attach(this)
+            setOnClickListener { startActivity(Intent(Settings.ACTION_SETTINGS)) }
+        }
         findViewById<TextView>(R.id.editButton).apply {
             FocusAnimator.attach(this)
             setOnClickListener { startActivity(Intent(this@MainActivity, SettingsActivity::class.java)) }

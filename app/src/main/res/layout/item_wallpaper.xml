@@ -4,6 +4,7 @@
     android:layout_height="138dp"
     android:layout_margin="8dp"
     android:background="@drawable/focus_surface"
+    android:foreground="@drawable/focus_ring"
     android:clickable="true"
     android:clipToOutline="true"
     android:focusable="true">

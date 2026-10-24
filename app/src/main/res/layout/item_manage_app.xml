@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="76dp"
     android:layout_marginBottom="10dp"
-    android:background="@drawable/focus_surface"
+    android:background="@drawable/pill_surface"
     android:clickable="true"
     android:focusable="true"
     android:gravity="center_vertical"
