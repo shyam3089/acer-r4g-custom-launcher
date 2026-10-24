@@ -1,8 +1,6 @@
 package com.shyam.acerlauncher.ui
 
 import android.app.Activity
-import android.graphics.RenderEffect
-import android.graphics.Shader
 import android.os.Build
 import android.view.View
 import android.widget.ImageView
@@ -17,10 +15,10 @@ fun Activity.applyWallpaper() {
     image.setImageDrawable(null)
     image.setImageResource(option.image)
     image.visibility = View.VISIBLE
-    image.scaleX = 1.02f
-    image.scaleY = 1.02f
+    image.scaleX = 1f
+    image.scaleY = 1f
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        image.setRenderEffect(RenderEffect.createBlurEffect(5f, 5f, Shader.TileMode.CLAMP))
+        image.setRenderEffect(null)
     }
     scrim?.visibility = View.VISIBLE
 }

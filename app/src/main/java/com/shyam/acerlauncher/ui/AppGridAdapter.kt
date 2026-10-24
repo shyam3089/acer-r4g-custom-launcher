@@ -60,7 +60,7 @@ class AppGridAdapter(
         init {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 labelBlur.setRenderEffect(
-                    RenderEffect.createBlurEffect(10f, 10f, Shader.TileMode.CLAMP),
+                    RenderEffect.createBlurEffect(22f, 22f, Shader.TileMode.CLAMP),
                 )
             }
         }

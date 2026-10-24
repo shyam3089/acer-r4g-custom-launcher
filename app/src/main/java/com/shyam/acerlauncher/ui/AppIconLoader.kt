@@ -4,7 +4,6 @@ import android.content.ComponentName
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.drawable.BitmapDrawable
 import android.os.Handler
 import android.os.Looper
 import android.util.LruCache
@@ -14,11 +13,10 @@ import java.util.concurrent.Executors
 
 class AppIconLoader(context: Context) : AutoCloseable {
     private val packageManager = context.packageManager
-    private val resources = context.resources
     private val executor = Executors.newSingleThreadExecutor()
     private val mainHandler = Handler(Looper.getMainLooper())
-    private val cache = object : LruCache<String, Bitmap>(6 * 1024 * 1024) {
-        override fun sizeOf(key: String, value: Bitmap): Int = value.byteCount
+    private val cache = object : LruCache<String, Artwork>(8 * 1024 * 1024) {
+        override fun sizeOf(key: String, value: Artwork): Int = value.bitmap.byteCount
     }
 
     fun load(component: ComponentName?, vararg targets: ImageView) {
@@ -29,26 +27,37 @@ class AppIconLoader(context: Context) : AutoCloseable {
         }
         if (component == null || key == null) return
         cache.get(key)?.let {
-            targets.forEach { target -> target.setImageBitmap(it) }
+            applyArtwork(key, it, targets)
             return
         }
         executor.execute {
-            val bitmap = runCatching {
-                val drawable = packageManager.getActivityIcon(component)
-                if (drawable is BitmapDrawable && drawable.bitmap.width <= ICON_SIZE * 2) {
-                    drawable.bitmap
-                } else {
-                    Bitmap.createBitmap(ICON_SIZE, ICON_SIZE, Bitmap.Config.ARGB_8888).also { output ->
-                        drawable.setBounds(0, 0, ICON_SIZE, ICON_SIZE)
-                        drawable.draw(Canvas(output))
-                    }
+            val artwork = runCatching {
+                @Suppress("DEPRECATION")
+                val activity = packageManager.getActivityInfo(component, 0)
+                val hasBanner = activity.banner != 0 || activity.applicationInfo.banner != 0
+                val drawable = if (hasBanner) activity.loadBanner(packageManager) else null
+                val source = drawable ?: activity.loadIcon(packageManager)
+                val width = if (drawable != null) BANNER_WIDTH else ICON_SIZE
+                val height = if (drawable != null) BANNER_HEIGHT else ICON_SIZE
+                val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888).also { output ->
+                    source.setBounds(0, 0, width, height)
+                    source.draw(Canvas(output))
                 }
+                Artwork(bitmap, drawable != null)
             }.getOrNull() ?: return@execute
-            cache.put(key, bitmap)
+            cache.put(key, artwork)
             mainHandler.post {
-                targets.forEach { target ->
-                    if (target.getTag(R.id.icon_request_tag) == key) target.setImageBitmap(bitmap)
-                }
+                applyArtwork(key, artwork, targets)
+            }
+        }
+    }
+
+    private fun applyArtwork(key: String, artwork: Artwork, targets: Array<out ImageView>) {
+        val scaleType = if (artwork.isBanner) ImageView.ScaleType.CENTER_CROP else ImageView.ScaleType.FIT_CENTER
+        targets.forEach { target ->
+            if (target.getTag(R.id.icon_request_tag) == key) {
+                target.scaleType = scaleType
+                target.setImageBitmap(artwork.bitmap)
             }
         }
     }
@@ -60,5 +69,9 @@ class AppIconLoader(context: Context) : AutoCloseable {
 
     companion object {
         private const val ICON_SIZE = 128
+        private const val BANNER_WIDTH = 320
+        private const val BANNER_HEIGHT = 180
     }
+
+    private data class Artwork(val bitmap: Bitmap, val isBanner: Boolean)
 }
