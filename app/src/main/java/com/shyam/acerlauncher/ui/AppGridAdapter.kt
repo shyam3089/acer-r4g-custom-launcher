@@ -3,6 +3,7 @@ package com.shyam.acerlauncher.ui
 import android.graphics.RenderEffect
 import android.graphics.Shader
 import android.os.Build
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ class AppGridAdapter(
     private val iconLoader: AppIconLoader,
     private val onLaunch: (LauncherApp) -> Unit,
     private val onLongPress: (LauncherApp) -> Unit,
+    private val onBottomOverscroll: () -> Unit,
 ) : RecyclerView.Adapter<AppGridAdapter.Holder>() {
     private var apps: List<LauncherApp> = emptyList()
 
@@ -48,6 +50,19 @@ class AppGridAdapter(
             onLongPress(app)
             true
         }
+        holder.itemView.setOnKeyListener { _, keyCode, event ->
+            val adapterPosition = holder.bindingAdapterPosition
+            val lastRowStart = if (itemCount == 0) 0 else ((itemCount - 1) / COLUMN_COUNT) * COLUMN_COUNT
+            val atBottomEdge = adapterPosition >= lastRowStart
+            if (atBottomEdge && keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
+                if (event.action == KeyEvent.ACTION_DOWN && event.repeatCount == 0) {
+                    onBottomOverscroll()
+                }
+                true
+            } else {
+                false
+            }
+        }
     }
 
     override fun getItemCount(): Int = apps.size
@@ -64,5 +79,9 @@ class AppGridAdapter(
                 )
             }
         }
+    }
+
+    private companion object {
+        const val COLUMN_COUNT = 4
     }
 }

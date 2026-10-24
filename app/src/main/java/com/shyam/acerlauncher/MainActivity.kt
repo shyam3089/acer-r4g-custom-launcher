@@ -7,6 +7,8 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
+import android.view.animation.DecelerateInterpolator
+import android.view.animation.OvershootInterpolator
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -51,9 +53,12 @@ class MainActivity : TvActivity() {
         iconLoader = AppIconLoader(this)
         grid = findViewById(R.id.appsGrid)
         emptyState = findViewById(R.id.emptyState)
-        adapter = AppGridAdapter(iconLoader, ::launchApp) {
-            startActivity(Intent(this, ReorderAppsActivity::class.java))
-        }
+        adapter = AppGridAdapter(
+            iconLoader = iconLoader,
+            onLaunch = ::launchApp,
+            onLongPress = { startActivity(Intent(this, ReorderAppsActivity::class.java)) },
+            onBottomOverscroll = ::animateBottomOverscroll,
+        )
         grid.layoutManager = GridLayoutManager(this, 4)
         grid.adapter = adapter
         grid.itemAnimator = null
@@ -161,6 +166,23 @@ class MainActivity : TvActivity() {
         runCatching { startActivity(exactIntent) }
             .recoverCatching { startActivity(fallback ?: throw it) }
             .onFailure { Toast.makeText(this, "Unable to open ${app.label}", Toast.LENGTH_SHORT).show() }
+    }
+
+    private fun animateBottomOverscroll() {
+        val resistedPull = -12f * resources.displayMetrics.density
+        grid.animate().cancel()
+        grid.animate()
+            .translationY(resistedPull)
+            .setDuration(90L)
+            .setInterpolator(DecelerateInterpolator())
+            .withEndAction {
+                grid.animate()
+                    .translationY(0f)
+                    .setDuration(260L)
+                    .setInterpolator(OvershootInterpolator(1.6f))
+                    .start()
+            }
+            .start()
     }
 
     private fun updateClock() {
