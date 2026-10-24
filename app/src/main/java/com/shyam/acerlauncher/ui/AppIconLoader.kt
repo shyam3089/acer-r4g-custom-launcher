@@ -21,13 +21,15 @@ class AppIconLoader(context: Context) : AutoCloseable {
         override fun sizeOf(key: String, value: Bitmap): Int = value.byteCount
     }
 
-    fun load(component: ComponentName?, target: ImageView) {
+    fun load(component: ComponentName?, vararg targets: ImageView) {
         val key = component?.flattenToString()
-        target.setTag(R.id.icon_request_tag, key)
-        target.setImageResource(R.drawable.ic_launcher)
+        targets.forEach { target ->
+            target.setTag(R.id.icon_request_tag, key)
+            target.setImageResource(R.drawable.ic_launcher)
+        }
         if (component == null || key == null) return
         cache.get(key)?.let {
-            target.setImageBitmap(it)
+            targets.forEach { target -> target.setImageBitmap(it) }
             return
         }
         executor.execute {
@@ -44,7 +46,9 @@ class AppIconLoader(context: Context) : AutoCloseable {
             }.getOrNull() ?: return@execute
             cache.put(key, bitmap)
             mainHandler.post {
-                if (target.getTag(R.id.icon_request_tag) == key) target.setImageBitmap(bitmap)
+                targets.forEach { target ->
+                    if (target.getTag(R.id.icon_request_tag) == key) target.setImageBitmap(bitmap)
+                }
             }
         }
     }

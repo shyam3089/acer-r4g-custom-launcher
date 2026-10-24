@@ -2,5 +2,5 @@
     <dimen name="screen_margin_horizontal">80dp</dimen>
     <dimen name="screen_margin_vertical">56dp</dimen>
     <dimen name="tile_width">168dp</dimen>
-    <dimen name="tile_height">126dp</dimen>
+    <dimen name="tile_height">116dp</dimen>
 </resources>

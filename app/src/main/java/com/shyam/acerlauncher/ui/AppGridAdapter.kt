@@ -1,5 +1,8 @@
 package com.shyam.acerlauncher.ui
 
+import android.graphics.RenderEffect
+import android.graphics.Shader
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,7 +42,7 @@ class AppGridAdapter(
         val app = apps[position]
         holder.label.text = app.label
         holder.itemView.contentDescription = app.label
-        iconLoader.load(app.componentName, holder.icon)
+        iconLoader.load(app.componentName, holder.icon, holder.labelBlur)
         holder.itemView.setOnClickListener { onLaunch(app) }
         holder.itemView.setOnLongClickListener {
             onLongPress(app)
@@ -51,6 +54,15 @@ class AppGridAdapter(
 
     class Holder(view: View) : RecyclerView.ViewHolder(view) {
         val icon: ImageView = view.findViewById(R.id.appIcon)
+        val labelBlur: ImageView = view.findViewById(R.id.appLabelBlur)
         val label: TextView = view.findViewById(R.id.appLabel)
+
+        init {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                labelBlur.setRenderEffect(
+                    RenderEffect.createBlurEffect(10f, 10f, Shader.TileMode.CLAMP),
+                )
+            }
+        }
     }
 }
