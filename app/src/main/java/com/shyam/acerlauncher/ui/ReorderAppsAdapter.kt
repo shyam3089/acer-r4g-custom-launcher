@@ -52,7 +52,11 @@ class ReorderAppsAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_reorder_app, parent, false)
-        FocusAnimator.attach(view)
+        FocusAnimator.attach(view) { target, focused ->
+            val icon = target.findViewById<ImageView>(R.id.appIcon)
+            if (focused) icon.setColorFilter(target.context.getColor(R.color.text_dark))
+            else icon.clearColorFilter()
+        }
         return Holder(view)
     }
 

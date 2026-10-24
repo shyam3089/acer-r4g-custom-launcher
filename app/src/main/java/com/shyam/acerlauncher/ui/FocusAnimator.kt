@@ -4,10 +4,11 @@ import android.animation.ValueAnimator
 import android.view.View
 
 object FocusAnimator {
-    fun attach(view: View) {
+    fun attach(view: View, onFocusChanged: ((View, Boolean) -> Unit)? = null) {
         view.isSoundEffectsEnabled = false
         NavigationSound.prepare(view.context)
         view.setOnFocusChangeListener { target, focused ->
+            onFocusChanged?.invoke(target, focused)
             target.animate().cancel()
             if (focused) NavigationSound.play(target.context)
             val scale = if (focused) 1.06f else 1f

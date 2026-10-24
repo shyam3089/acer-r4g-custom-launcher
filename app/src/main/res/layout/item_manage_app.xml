@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="76dp"
+    android:layout_marginHorizontal="8dp"
     android:layout_marginBottom="10dp"
     android:background="@drawable/pill_surface"
     android:clickable="true"
@@ -22,6 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
         android:layout_weight="1"
+        android:duplicateParentState="true"
         android:ellipsize="end"
         android:maxLines="1"
         android:textColor="@color/focus_text"
@@ -31,5 +33,6 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:contentDescription="@null"
+        android:duplicateParentState="true"
         android:src="@drawable/ic_check" />
 </LinearLayout>
