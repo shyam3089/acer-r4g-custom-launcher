@@ -8,10 +8,6 @@ Still Home is a small, offline-first Android TV launcher designed for the Acer R
 
 ![Still Home launcher home screen](acer-r4g-home-screen.png)
 
-### Quick settings
-
-![Still Home launcher quick settings](acer-r4g-quick-settings.png)
-
 ## Features
 
 - Native HOME and Leanback launcher activity with D-pad navigation.
