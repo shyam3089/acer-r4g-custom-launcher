@@ -8,7 +8,7 @@
     <string name="reorder_apps">Reorder Apps</string>
     <string name="appearance">Appearance</string>
     <string name="about">About / Version</string>
-    <string name="about_summary">Still Home 1.1.5\nA quiet, local Android TV launcher.</string>
+    <string name="about_summary">Still Home 1.1.6\nA quiet, local Android TV launcher.</string>
     <string name="empty_home_title">Your Home is ready</string>
     <string name="empty_home_message">Choose Edit apps to pin your favorite TV applications.</string>
     <string name="manage_hint">Press OK to add or remove an app from Home.</string>
