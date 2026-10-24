@@ -23,4 +23,20 @@
         <item name="android:textColor">@color/focus_text</item>
         <item name="android:textSize">20sp</item>
     </style>
+
+    <style name="QuickSettingsItem">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">64dp</item>
+        <item name="android:layout_marginBottom">12dp</item>
+        <item name="android:background">@drawable/pill_surface</item>
+        <item name="android:clickable">true</item>
+        <item name="android:drawablePadding">18dp</item>
+        <item name="android:drawableTint">@color/text_dark</item>
+        <item name="android:focusable">true</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingStart">22dp</item>
+        <item name="android:paddingEnd">22dp</item>
+        <item name="android:textColor">@color/text_dark</item>
+        <item name="android:textSize">19sp</item>
+    </style>
 </resources>

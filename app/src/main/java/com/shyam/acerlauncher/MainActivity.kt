@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.provider.Settings
+import android.view.KeyEvent
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.OvershootInterpolator
@@ -37,6 +38,9 @@ class MainActivity : TvActivity() {
     private lateinit var adapter: AppGridAdapter
     private lateinit var grid: RecyclerView
     private lateinit var emptyState: LinearLayout
+    private lateinit var quickSettingsButton: View
+    private lateinit var quickSettingsOverlay: View
+    private lateinit var quickSettingsPanel: View
     private var receiverRegistered = false
 
     private val timeReceiver = object : BroadcastReceiver() {
@@ -63,6 +67,24 @@ class MainActivity : TvActivity() {
         grid.adapter = adapter
         grid.itemAnimator = null
 
+        quickSettingsButton = findViewById(R.id.quickSettingsButton)
+        quickSettingsOverlay = findViewById(R.id.quickSettingsOverlay)
+        quickSettingsPanel = findViewById(R.id.quickSettingsPanel)
+        quickSettingsButton.apply {
+            FocusAnimator.attach(this)
+            setOnClickListener { showQuickSettings() }
+        }
+        findViewById<View>(R.id.quickSettingsDismissArea).setOnClickListener {
+            closeQuickSettings()
+        }
+        bindQuickSetting(R.id.quickNetworkButton, Intent(Settings.ACTION_WIFI_SETTINGS))
+        bindQuickSetting(
+            R.id.quickBluetoothButton,
+            Intent("com.google.android.intent.action.CONNECT_INPUT"),
+        )
+        bindQuickSetting(R.id.quickDisplaySoundButton, Intent(Settings.ACTION_SOUND_SETTINGS))
+        bindQuickSetting(R.id.quickAndroidSettingsButton, Intent(Settings.ACTION_SETTINGS))
+
         findViewById<View>(R.id.systemSettingsButton).apply {
             FocusAnimator.attach(this)
             setOnClickListener { startActivity(Intent(Settings.ACTION_SETTINGS)) }
@@ -72,6 +94,14 @@ class MainActivity : TvActivity() {
             setOnClickListener { startActivity(Intent(this@MainActivity, SettingsActivity::class.java)) }
         }
         updateClock()
+    }
+
+    override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK && quickSettingsOverlay.visibility == View.VISIBLE) {
+            closeQuickSettings()
+            return true
+        }
+        return super.onKeyUp(keyCode, event)
     }
 
     override fun onStart() {
@@ -166,6 +196,60 @@ class MainActivity : TvActivity() {
         runCatching { startActivity(exactIntent) }
             .recoverCatching { startActivity(fallback ?: throw it) }
             .onFailure { Toast.makeText(this, "Unable to open ${app.label}", Toast.LENGTH_SHORT).show() }
+    }
+
+    private fun bindQuickSetting(id: Int, intent: Intent) {
+        findViewById<View>(id).apply {
+            FocusAnimator.attach(this)
+            setOnClickListener { openQuickSetting(intent) }
+        }
+    }
+
+    private fun showQuickSettings() {
+        quickSettingsOverlay.visibility = View.VISIBLE
+        quickSettingsPanel.animate().cancel()
+        quickSettingsPanel.post {
+            quickSettingsPanel.translationX = -quickSettingsPanel.width.toFloat()
+            quickSettingsPanel.alpha = 0.82f
+            quickSettingsPanel.animate()
+                .translationX(0f)
+                .alpha(1f)
+                .setDuration(220L)
+                .setInterpolator(DecelerateInterpolator())
+                .start()
+            quickSettingsPanel.postDelayed({
+                if (quickSettingsOverlay.visibility == View.VISIBLE) {
+                    findViewById<View>(R.id.quickNetworkButton).requestFocus()
+                }
+            }, 140L)
+        }
+    }
+
+    private fun closeQuickSettings() {
+        quickSettingsPanel.animate().cancel()
+        quickSettingsPanel.animate()
+            .translationX(-quickSettingsPanel.width.toFloat())
+            .alpha(0.82f)
+            .setDuration(180L)
+            .setInterpolator(DecelerateInterpolator())
+            .withEndAction {
+                quickSettingsOverlay.visibility = View.GONE
+                quickSettingsPanel.translationX = 0f
+                quickSettingsPanel.alpha = 1f
+                quickSettingsButton.requestFocus()
+            }
+            .start()
+    }
+
+    private fun openQuickSetting(intent: Intent) {
+        if (intent.resolveActivity(packageManager) == null) {
+            Toast.makeText(this, R.string.settings_unavailable, Toast.LENGTH_SHORT).show()
+            return
+        }
+        quickSettingsOverlay.visibility = View.GONE
+        quickSettingsPanel.translationX = 0f
+        quickSettingsPanel.alpha = 1f
+        startActivity(intent)
     }
 
     private fun animateBottomOverscroll() {

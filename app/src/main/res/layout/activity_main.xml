@@ -69,6 +69,19 @@
                 android:orientation="horizontal">
 
                 <ImageButton
+                    android:id="@+id/quickSettingsButton"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_marginEnd="12dp"
+                    android:background="@drawable/pill_surface"
+                    android:contentDescription="@string/open_quick_settings"
+                    android:focusable="true"
+                    android:padding="14dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_menu"
+                    android:tint="@color/settings_icon_tint" />
+
+                <ImageButton
                     android:id="@+id/systemSettingsButton"
                     android:layout_width="56dp"
                     android:layout_height="56dp"
@@ -147,4 +160,82 @@
                 android:textSize="18sp" />
         </LinearLayout>
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/quickSettingsOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <View
+            android:id="@+id/quickSettingsDismissArea"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#52000000"
+            android:clickable="true"
+            android:focusable="false" />
+
+        <LinearLayout
+            android:id="@+id/quickSettingsPanel"
+            android:layout_width="460dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="@drawable/quick_panel_background"
+            android:elevation="28dp"
+            android:orientation="vertical"
+            android:paddingStart="42dp"
+            android:paddingTop="48dp"
+            android:paddingEnd="42dp"
+            android:paddingBottom="48dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:text="@string/quick_settings"
+                android:textColor="@color/text_dark"
+                android:textSize="32sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/quickNetworkButton"
+                style="@style/QuickSettingsItem"
+                android:drawableStart="@drawable/ic_wifi"
+                android:nextFocusDown="@id/quickBluetoothButton"
+                android:nextFocusLeft="@id/quickNetworkButton"
+                android:nextFocusRight="@id/quickNetworkButton"
+                android:nextFocusUp="@id/quickNetworkButton"
+                android:text="@string/network_settings" />
+
+            <TextView
+                android:id="@+id/quickBluetoothButton"
+                style="@style/QuickSettingsItem"
+                android:drawableStart="@drawable/ic_bluetooth"
+                android:nextFocusDown="@id/quickDisplaySoundButton"
+                android:nextFocusLeft="@id/quickBluetoothButton"
+                android:nextFocusRight="@id/quickBluetoothButton"
+                android:nextFocusUp="@id/quickNetworkButton"
+                android:text="@string/bluetooth_settings" />
+
+            <TextView
+                android:id="@+id/quickDisplaySoundButton"
+                style="@style/QuickSettingsItem"
+                android:drawableStart="@drawable/ic_display_sound"
+                android:nextFocusDown="@id/quickAndroidSettingsButton"
+                android:nextFocusLeft="@id/quickDisplaySoundButton"
+                android:nextFocusRight="@id/quickDisplaySoundButton"
+                android:nextFocusUp="@id/quickBluetoothButton"
+                android:text="@string/display_sound_settings" />
+
+            <TextView
+                android:id="@+id/quickAndroidSettingsButton"
+                style="@style/QuickSettingsItem"
+                android:drawableStart="@drawable/ic_settings"
+                android:nextFocusDown="@id/quickAndroidSettingsButton"
+                android:nextFocusLeft="@id/quickAndroidSettingsButton"
+                android:nextFocusRight="@id/quickAndroidSettingsButton"
+                android:nextFocusUp="@id/quickDisplaySoundButton"
+                android:text="@string/android_settings" />
+        </LinearLayout>
+    </FrameLayout>
 </FrameLayout>
