@@ -1,10 +1,11 @@
 <resources>
     <color name="ink">#0B1017</color>
-    <color name="surface">#E61A222D</color>
-    <color name="surface_focused">#FFF3F6F9</color>
+    <color name="surface">#52FFFFFF</color>
+    <color name="surface_focused">#F2FFFFFF</color>
     <color name="text_primary">#FFF7F9FB</color>
     <color name="text_dark">#FF10151C</color>
     <color name="text_secondary">#FFBCC6D2</color>
     <color name="accent">#FFBFD9F2</color>
-    <color name="scrim">#73060A10</color>
+    <color name="scrim">#2E07101A</color>
+    <color name="label_surface">#D9FFFFFF</color>
 </resources>
