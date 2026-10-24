@@ -36,7 +36,7 @@ class AppGridAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_app_tile, parent, false)
-        FocusAnimator.attach(view)
+        FocusAnimator.attach(view, focusedScale = 1f)
         return Holder(view)
     }
 
