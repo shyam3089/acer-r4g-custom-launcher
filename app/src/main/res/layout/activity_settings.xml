@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/wallpaper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop"
+        android:src="@drawable/wallpaper_mountain" />
+    <View android:id="@+id/wallpaperScrim" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@color/scrim" />
+    <LinearLayout
+        android:layout_width="700dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/screen_margin_horizontal"
+        android:paddingTop="@dimen/screen_margin_vertical"
+        android:paddingEnd="24dp"
+        android:paddingBottom="@dimen/screen_margin_vertical">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/settings" android:textColor="@color/text_primary" android:textSize="34sp" android:textStyle="bold" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="28dp" android:orientation="vertical">
+            <TextView android:id="@+id/manageButton" style="@style/LauncherMenuItem" android:text="@string/manage_home_apps" />
+            <TextView android:id="@+id/reorderButton" style="@style/LauncherMenuItem" android:text="@string/reorder_apps" />
+            <TextView android:id="@+id/appearanceButton" style="@style/LauncherMenuItem" android:text="@string/appearance" />
+            <TextView android:id="@+id/aboutButton" style="@style/LauncherMenuItem" android:text="@string/about" />
+        </LinearLayout>
+        <TextView android:id="@+id/aboutText" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="24dp" android:background="@drawable/panel_background" android:padding="22dp" android:text="@string/about_summary" android:textColor="@color/text_secondary" android:textSize="18sp" android:visibility="gone" />
+    </LinearLayout>
+</FrameLayout>
