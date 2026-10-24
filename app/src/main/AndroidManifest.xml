@@ -28,6 +28,9 @@
             android:name=".ui.AppearanceActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.AllAppsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.ReorderAppsActivity"
             android:exported="false" />
         <activity

@@ -2,6 +2,9 @@
     <string name="app_name">Still Home</string>
     <string name="home_title">Home</string>
     <string name="edit_apps">Edit apps</string>
+    <string name="all_apps">All apps</string>
+    <string name="all_apps_empty">No TV apps were found.</string>
+    <string name="unable_to_open_app">Unable to open %1$s</string>
     <string name="settings">Settings</string>
     <string name="android_settings">Android settings</string>
     <string name="quick_settings">Quick settings</string>

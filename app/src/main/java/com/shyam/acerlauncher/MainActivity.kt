@@ -31,6 +31,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shyam.acerlauncher.data.AppDiscovery
 import com.shyam.acerlauncher.data.LauncherApp
 import com.shyam.acerlauncher.data.LauncherPreferences
+import com.shyam.acerlauncher.ui.AllAppsActivity
 import com.shyam.acerlauncher.ui.AppGridAdapter
 import com.shyam.acerlauncher.ui.AppIconLoader
 import com.shyam.acerlauncher.ui.FocusAnimator
@@ -122,9 +123,13 @@ class MainActivity : TvActivity() {
             FocusAnimator.attach(this)
             setOnClickListener { startActivity(Intent(Settings.ACTION_SETTINGS)) }
         }
-        findViewById<TextView>(R.id.editButton).apply {
+        findViewById<View>(R.id.editButton).apply {
             FocusAnimator.attach(this)
             setOnClickListener { startActivity(Intent(this@MainActivity, SettingsActivity::class.java)) }
+        }
+        findViewById<View>(R.id.allAppsButton).apply {
+            FocusAnimator.attach(this)
+            setOnClickListener { startActivity(Intent(this@MainActivity, AllAppsActivity::class.java)) }
         }
         updateClock()
     }
