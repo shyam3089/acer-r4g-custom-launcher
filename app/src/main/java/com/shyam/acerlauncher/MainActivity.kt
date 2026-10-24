@@ -100,7 +100,7 @@ class MainActivity : TvActivity() {
         quickSettingsBlur = findViewById(R.id.quickSettingsBlur)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             quickSettingsBlur.setRenderEffect(
-                RenderEffect.createBlurEffect(18f, 18f, Shader.TileMode.CLAMP),
+                RenderEffect.createBlurEffect(28f, 28f, Shader.TileMode.CLAMP),
             )
         }
         quickSettingsButton.apply {
@@ -239,7 +239,7 @@ class MainActivity : TvActivity() {
 
     private fun bindQuickSetting(id: Int, intent: Intent) {
         findViewById<View>(id).apply {
-            FocusAnimator.attach(this)
+            FocusAnimator.attach(this, focusedScale = 1.025f)
             setOnClickListener { openQuickSetting(intent) }
         }
     }
