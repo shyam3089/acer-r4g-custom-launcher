@@ -65,17 +65,25 @@ adb shell cmd package set-home-activity --user 0 com.shyam.acerlauncher/.MainAct
 
 This does not remove or disable Google TV Home.
 
-### Acer R4G Android 14 limitation
+### Acer R4G Android 14 HOME override
 
-On the tested Acer R4G firmware, Android accepts Still Home as the HOME role holder, but the OEM resolver still launches Google TV Home. Google TV Home has system priority 2 and the setup/recovery HOME has system priority 1; Android clamps an ordinary installed launcher to priority 0. Consequently, `set-home-activity` alone does not make this build the boot/Home-key launcher on this firmware.
+This firmware gives Google TV Home system priority 2 and SetupWraith's recovery HOME system priority 1, while an ordinary installed launcher is limited to priority 0. The following verified, reversible user-0 override is therefore required after installing Still Home:
 
-Do not disable additional setup/recovery system packages to work around this ordering. A persistent default requires an Acer firmware option that honors the HOME role, a firmware update, or system-level provisioning. The launcher remains directly launchable from Apps while Google TV Home remains intact.
+```powershell
+adb shell pm disable-user --user 0 com.google.android.apps.tv.launcherx
+adb shell pm uninstall -k --user 0 com.google.android.tungsten.setupwraith
+adb shell cmd package set-home-activity --user 0 com.shyam.acerlauncher/.MainActivity
+```
+
+`launcherx` is only disabled for user 0. SetupWraith is removed only from user 0; its read-only system APK remains installed and can be restored. The override was verified across a full TV reboot.
 
 ## Roll back to Google TV Home
 
-Restore the original Acer launcher:
+Restore both higher-priority system HOME handlers, then select Google TV Home:
 
 ```powershell
+adb shell cmd package install-existing --user 0 com.google.android.tungsten.setupwraith
+adb shell pm enable --user 0 com.google.android.apps.tv.launcherx
 adb shell cmd package set-home-activity --user 0 com.google.android.apps.tv.launcherx/.home.HomeActivity
 ```
 
@@ -101,4 +109,4 @@ The implementation is structured for low overhead, but performance targets must 
 - Reordering currently uses a vertical management list, while Home uses a four-column grid.
 - The clock format follows the device locale but currently uses a 12-hour display pattern.
 - Cold-start, warm-HOME, memory, CPU, and frame targets require later device measurement.
-- Acer R4G Android 14 overrides the selected third-party HOME role with higher-priority system HOME activities.
+- Acer R4G Android 14 requires the documented per-user HOME override because its system HOME activities outrank third-party launchers.
