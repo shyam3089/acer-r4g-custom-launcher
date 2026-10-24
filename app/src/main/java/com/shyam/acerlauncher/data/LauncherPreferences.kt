@@ -8,7 +8,8 @@ class LauncherPreferences(context: Context) {
     val favorites = FavoritesRepository(SharedPreferencesStringStore(preferences))
 
     var wallpaper: String
-        get() = preferences.getString(KEY_WALLPAPER, WALLPAPER_MOUNTAIN) ?: WALLPAPER_MOUNTAIN
+        get() = preferences.getString(KEY_WALLPAPER, WallpaperCatalog.all.first().id)
+            ?: WallpaperCatalog.all.first().id
         set(value) = preferences.edit().putString(KEY_WALLPAPER, value).apply()
 
     var lastFocusedComponent: String?
@@ -19,7 +20,5 @@ class LauncherPreferences(context: Context) {
         private const val FILE_NAME = "launcher_preferences"
         private const val KEY_WALLPAPER = "wallpaper"
         private const val KEY_LAST_FOCUS = "last_focus"
-        const val WALLPAPER_MOUNTAIN = "mountain"
-        const val WALLPAPER_SOLID = "solid"
     }
 }

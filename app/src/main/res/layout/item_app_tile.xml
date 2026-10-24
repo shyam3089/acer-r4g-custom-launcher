@@ -1,31 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/tile_width"
     android:layout_height="@dimen/tile_height"
-    android:layout_margin="10dp"
+    android:layout_margin="8dp"
     android:background="@drawable/focus_surface"
     android:clickable="true"
     android:focusable="true"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:padding="18dp">
+    android:clipToOutline="true">
 
     <ImageView
         android:id="@+id/appIcon"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:contentDescription="@null"
-        android:scaleType="fitCenter" />
+        android:paddingBottom="30dp"
+        android:scaleType="centerCrop" />
 
     <TextView
         android:id="@+id/appLabel"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_height="32dp"
+        android:layout_gravity="bottom"
+        android:background="@drawable/label_background"
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="1"
-        android:textColor="@color/focus_text"
-        android:textSize="17sp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:textColor="@color/text_dark"
+        android:textSize="15sp"
         android:textStyle="bold" />
-</LinearLayout>
+</FrameLayout>

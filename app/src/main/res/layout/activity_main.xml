@@ -78,7 +78,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="42dp"
+            android:layout_marginTop="32dp"
             android:text="@string/home_title"
             android:textColor="@color/text_primary"
             android:textSize="28sp"
@@ -93,7 +93,10 @@
             android:clipChildren="false"
             android:clipToPadding="false"
             android:overScrollMode="never"
-            android:padding="12dp" />
+            android:paddingStart="20dp"
+            android:paddingTop="14dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="14dp" />
 
         <LinearLayout
             android:id="@+id/emptyState"

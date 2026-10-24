@@ -43,7 +43,7 @@ app/build/outputs/apk/debug/app-debug.apk
 - **Manage Home Apps** pins or unpins installed TV applications.
 - **Reorder Apps** lets you pick up and move pinned applications using only the remote.
 - Long-press OK on a Home tile to open reorder mode.
-- **Appearance** switches between the bundled wallpaper and a solid dark background.
+- **Appearance** offers six bundled wallpapers in a remote-friendly 3x2 gallery.
 
 Unpinning never uninstalls or disables an application.
 
@@ -64,6 +64,12 @@ adb shell cmd package set-home-activity --user 0 com.shyam.acerlauncher/.MainAct
 ```
 
 This does not remove or disable Google TV Home.
+
+### Acer R4G Android 14 limitation
+
+On the tested Acer R4G firmware, Android accepts Still Home as the HOME role holder, but the OEM resolver still launches Google TV Home. Google TV Home has system priority 2 and the setup/recovery HOME has system priority 1; Android clamps an ordinary installed launcher to priority 0. Consequently, `set-home-activity` alone does not make this build the boot/Home-key launcher on this firmware.
+
+Do not disable additional setup/recovery system packages to work around this ordering. A persistent default requires an Acer firmware option that honors the HOME role, a firmware update, or system-level provisioning. The launcher remains directly launchable from Apps while Google TV Home remains intact.
 
 ## Roll back to Google TV Home
 
@@ -95,3 +101,4 @@ The implementation is structured for low overhead, but performance targets must 
 - Reordering currently uses a vertical management list, while Home uses a four-column grid.
 - The clock format follows the device locale but currently uses a 12-hour display pattern.
 - Cold-start, warm-HOME, memory, CPU, and frame targets require later device measurement.
+- Acer R4G Android 14 overrides the selected third-party HOME role with higher-priority system HOME activities.

@@ -11,7 +11,7 @@
         android:src="@drawable/wallpaper_mountain" />
     <View android:id="@+id/wallpaperScrim" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@color/scrim" />
     <LinearLayout
-        android:layout_width="700dp"
+        android:layout_width="620dp"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingStart="@dimen/screen_margin_horizontal"
@@ -25,6 +25,6 @@
             <TextView android:id="@+id/appearanceButton" style="@style/LauncherMenuItem" android:text="@string/appearance" />
             <TextView android:id="@+id/aboutButton" style="@style/LauncherMenuItem" android:text="@string/about" />
         </LinearLayout>
-        <TextView android:id="@+id/aboutText" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="24dp" android:background="@drawable/panel_background" android:padding="22dp" android:text="@string/about_summary" android:textColor="@color/text_secondary" android:textSize="18sp" android:visibility="gone" />
+        <TextView android:id="@+id/aboutText" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="24dp" android:background="@drawable/panel_background" android:padding="22dp" android:text="@string/about_summary" android:textColor="@color/text_dark" android:textSize="18sp" android:visibility="gone" />
     </LinearLayout>
 </FrameLayout>

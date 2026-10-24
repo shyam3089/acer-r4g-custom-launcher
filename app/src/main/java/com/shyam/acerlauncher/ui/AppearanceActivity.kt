@@ -1,9 +1,11 @@
 package com.shyam.acerlauncher.ui
 
 import android.os.Bundle
-import android.view.View
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.shyam.acerlauncher.R
 import com.shyam.acerlauncher.data.LauncherPreferences
+import com.shyam.acerlauncher.data.WallpaperCatalog
 
 class AppearanceActivity : TvActivity() {
     private lateinit var preferences: LauncherPreferences
@@ -13,21 +15,14 @@ class AppearanceActivity : TvActivity() {
         setContentView(R.layout.activity_appearance)
         preferences = LauncherPreferences(this)
         applyWallpaper()
-
-        bind(R.id.mountainButton, LauncherPreferences.WALLPAPER_MOUNTAIN)
-        bind(R.id.solidButton, LauncherPreferences.WALLPAPER_SOLID)
-        findViewById<View>(
-            if (preferences.wallpaper == LauncherPreferences.WALLPAPER_SOLID) R.id.solidButton else R.id.mountainButton
-        ).requestFocus()
-    }
-
-    private fun bind(id: Int, value: String) {
-        findViewById<View>(id).apply {
-            FocusAnimator.attach(this)
-            setOnClickListener {
-                preferences.wallpaper = value
+        findViewById<RecyclerView>(R.id.wallpaperGrid).apply {
+            layoutManager = GridLayoutManager(this@AppearanceActivity, 3)
+            adapter = WallpaperAdapter(WallpaperCatalog.all, preferences.wallpaper) { option ->
+                preferences.wallpaper = option.id
                 applyWallpaper()
             }
+            itemAnimator = null
+            post { findViewHolderForAdapterPosition(WallpaperCatalog.all.indexOf(WallpaperCatalog.find(preferences.wallpaper)))?.itemView?.requestFocus() }
         }
     }
 }
