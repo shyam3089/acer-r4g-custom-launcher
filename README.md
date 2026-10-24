@@ -1,4 +1,4 @@
-# Still Home for Acer R4G
+# Custom Home Screen for Acer R4G
 
 Still Home is a small, offline-first Android TV launcher designed for the Acer R4G (Android 14, 32-bit ARMv7, 2 GB RAM). It uses Kotlin, Android Views, and RecyclerView. It contains no ads, analytics, recommendation feed, WebView, network permission, or background service.
 
